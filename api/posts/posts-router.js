@@ -52,4 +52,40 @@ router.post('/', (req, res) => {
           });
 })
 
+router.put('/:id', (req, res) => {
+    const changes = req.body;
+    Post.update(req.params.id, changes)
+      .then(post => {
+        if (post) {
+          res.status(200).json(post);
+        } else {
+          res.status(404).json({ message: 'The adopter could not be found' });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).json({
+          message: 'Error updating the adopter',
+        });
+      });
+  });
+
+  router.delete('/:id', (req, res) => {
+    Post.remove(req.params.id)
+      .then(count => {
+        if (count > 0) {
+          res.status(200).json({ message: 'The adopter has been nuked' });
+        } else {
+          res.status(404).json({ message: 'The adopter could not be found' });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).json({
+          message: 'Error removing the adopter',
+        });
+      });
+  });
+  
+
 module.exports = router;
